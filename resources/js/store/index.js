@@ -5,24 +5,32 @@ export const Types = {
     ADD: "createComment",
     DELETE: "deleteComment",
     SET_RANGE: "setDataRange",
-    SET_PREDICATE: "setSortPredicate"
+    SET_PREDICATE: "setSortPredicate",
+    SET_FILTER: "setFilter"
 };
 
 export const Store = {
     state() {
         return {
             allComments: [],
-            sortPredicate: () => 1,
-            startSliceIndex: 0,
-            endSliceIndex: 0
+            sortPredicate: () => 1, // предикат сортировки
+            filterPredicate: it => it, // предикат фильтрации
+            startSliceIndex: 0, // индексы начала
+            endSliceIndex: 0 // и конца массива для отображения среза данных
         };
     },
     getters: {
         displayedComments(state) {
-            const { sortPredicate, startSliceIndex, endSliceIndex } = state;
+            const {
+                sortPredicate,
+                filterPredicate,
+                startSliceIndex,
+                endSliceIndex
+            } = state;
 
             return state.allComments
                 .sort(sortPredicate)
+                .filter(filterPredicate)
                 .slice(
                     startSliceIndex,
                     endSliceIndex > 0 ? endSliceIndex : state.allComments.length
@@ -53,6 +61,9 @@ export const Store = {
         },
         [Types.SET_PREDICATE]({ commit }, predicate) {
             commit(Types.SET_PREDICATE, predicate);
+        },
+        [Types.SET_FILTER]({ commit }, filter) {
+            commit(Types.SET_FILTER, filter);
         }
     },
     mutations: {
@@ -75,6 +86,9 @@ export const Store = {
         },
         [Types.SET_PREDICATE](state, predicate) {
             state.sortPredicate = predicate;
+        },
+        [Types.SET_FILTER](state, filter) {
+            state.filterPredicate = filter;
         }
     }
 };

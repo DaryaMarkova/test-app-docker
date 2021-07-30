@@ -4,7 +4,7 @@
     box-shadow: 0 1px 1px 0 rgb(60 75 100 / 14%),
         0 2px 1px -1px rgb(60 75 100 / 12%), 0 1px 3px 0 rgb(60 75 100 / 20%);
     border-radius: 0.25rem;
-    border-left: 2px solid teal;
+    border-left: 2px solid #1284e7;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     background-color: #fff;
@@ -23,7 +23,7 @@
 }
 .comment-body__name {
     font-weight: 500;
-    color: teal;
+    color: #1284e7;
 }
 .comment-body__text {
     margin: 0px;

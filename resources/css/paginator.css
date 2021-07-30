@@ -4,12 +4,12 @@
     cursor: pointer;
 }
 .pagination-link:active {
-    color: teal;
+    color: #1284e7;
     font-weight: 500;
 }
 .pagination-link:hover {
     text-decoration: underline;
 }
 .active {
-    color: teal;
+    color: #1284e7;
 }

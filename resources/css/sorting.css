@@ -7,6 +7,9 @@
     vertical-align: -2px;
 }
 .comment-sorting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-left: 4px;
     text-align: center;
 }

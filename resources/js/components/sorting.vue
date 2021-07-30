@@ -13,23 +13,36 @@
       }"
       @click="toggleSortingDateOrder"
     >Date</a>
+    <span class="comment-sorting__button">From:</span>
+    <date-picker class="datepicker" v-model="dateFrom" />
+    <span class="comment-sorting__button">&nbsp;To:</span>
+    <date-picker class="datepicker" v-model="dateTo" />
   </div>
 </template>
 <script>
 import { mapActions } from "vuex";
 import { Types } from "./../store/";
 import moment from "moment";
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
+
 export default {
   name: "sorting",
+  components: {
+    DatePicker
+  },
   data() {
     return {
-      idOrder: -1,
-      dateOrder: 1
+      idOrder: -1, // направление сортировки по id
+      dateOrder: 1, // направление сортировки по дате
+      dateFrom: new Date(), // стартовая
+      dateTo: new Date() // и конечная дата для фильтрации
     };
   },
   methods: {
     ...mapActions({
-      setPredicate: Types.SET_PREDICATE
+      setPredicate: Types.SET_PREDICATE,
+      setFilter: Types.SET_FILTER
     }),
     toggleSortingIdOrder() {
       this.idOrder *= -1;
@@ -44,6 +57,24 @@ export default {
         (moment(item1.date).unix() - moment(item2.date).unix());
 
       this.setPredicate(predicate);
+    },
+    getFilterByDates(startDate, endDate) {
+      const getTime = date => moment(date).unix();
+
+      return item => {
+        const time = getTime(item.date);
+        return time >= getTime(startDate) && time <= getTime(endDate);
+      };
+    }
+  },
+  watch: {
+    dateFrom(newDateFrom) {
+      const filter = this.getFilterByDates(newDateFrom, this.dateTo);
+      this.setFilter(filter);
+    },
+    dateTo(newDateTo) {
+      const filter = this.getFilterByDates(this.dateFrom, newDateTo);
+      this.setFilter(filter);
     }
   }
 };
