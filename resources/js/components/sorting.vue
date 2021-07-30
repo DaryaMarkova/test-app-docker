@@ -63,7 +63,10 @@ export default {
 
       return item => {
         const time = getTime(item.date);
-        return time >= getTime(startDate) && time <= getTime(endDate);
+        return (
+          time >= getTime(startDate) &&
+          time < getTime(moment(endDate).add(1, "days"))
+        );
       };
     }
   },
