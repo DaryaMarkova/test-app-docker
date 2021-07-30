@@ -1,0 +1,19 @@
+.arrowed-up::after {
+    content: url("./../assets/arrowup-icon.svg");
+    vertical-align: -2px;
+}
+.arrowed-down::after {
+    content: url("./../assets/arrowdown-icon.svg");
+    vertical-align: -2px;
+}
+.comment-sorting {
+    padding-left: 4px;
+    text-align: center;
+}
+.comment-sorting__button {
+    color: grey;
+    opacity: 0.8;
+    padding-right: 8px;
+    font-size: 0.9em;
+    cursor: pointer;
+}

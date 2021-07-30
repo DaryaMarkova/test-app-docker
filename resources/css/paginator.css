@@ -1,0 +1,15 @@
+.pagination-link {
+    padding: 0px 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pagination-link:active {
+    color: teal;
+    font-weight: 500;
+}
+.pagination-link:hover {
+    text-decoration: underline;
+}
+.active {
+    color: teal;
+}
