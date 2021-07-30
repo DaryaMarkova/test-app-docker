@@ -61,13 +61,22 @@ export default {
     getFilterByDates(startDate, endDate) {
       const getTime = date => moment(date).unix();
 
-      return item => {
-        const time = getTime(item.date);
-        return (
-          time >= getTime(startDate) &&
-          time < getTime(moment(endDate).add(1, "days"))
-        );
-      };
+      if (startDate && endDate) {
+        return item => {
+          const time = getTime(item.date);
+          return time > getTime(startDate) && time < getTime(endDate);
+        };
+      } else if (startDate) {
+        return item => {
+          const time = getTime(item.date);
+          return time >= getTime(startDate);
+        };
+      } else {
+        return item => {
+          const time = getTime(item.date);
+          return time <= getTime(endDate);
+        };
+      }
     }
   },
   watch: {
