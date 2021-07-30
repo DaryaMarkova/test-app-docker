@@ -16,7 +16,8 @@ export const Store = {
             sortPredicate: () => 1, // предикат сортировки
             filterPredicate: it => it, // предикат фильтрации
             startSliceIndex: 0, // индексы начала
-            endSliceIndex: 0 // и конца массива для отображения среза данных
+            endSliceIndex: 0, // и конца массива для отображения среза данных,
+            isLoading: false
         };
     },
     getters: {
@@ -39,22 +40,37 @@ export const Store = {
     },
     // TODO: proper error handling
     actions: {
-        async [Types.LOAD]({ commit }) {
+        async [Types.LOAD]({ commit, state }) {
+            state.isLoading = true;
+
             commentDataService
                 .fetchComments()
                 .then(list => commit(Types.LOAD, list))
-                .catch(() => commit(Types.LOAD, []));
+                .catch(() => commit(Types.LOAD, []))
+                .finally(() => {
+                    state.isLoading = false;
+                });
         },
-        [Types.ADD]({ commit }, comment) {
+        [Types.ADD]({ commit, state }, comment) {
+            state.isLoading = true;
+
             commentDataService
                 .createComment(comment)
                 .then(createdComment => commit(Types.ADD, createdComment))
-                .catch(() => commit({}));
+                .catch(() => commit({}))
+                .finally(() => {
+                    state.isLoading = false;
+                });
         },
-        [Types.DELETE]({ commit }, commentId) {
+        [Types.DELETE]({ commit, state }, commentId) {
+            state.isLoading = true;
+
             commentDataService
                 .deleteComment(commentId)
-                .then(() => commit(Types.DELETE, commentId));
+                .then(() => commit(Types.DELETE, commentId))
+                .finally(() => {
+                    state.isLoading = false;
+                });
         },
         [Types.SET_RANGE]({ commit }, range) {
             commit(Types.SET_RANGE, range);

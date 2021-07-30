@@ -1,9 +1,10 @@
 <template>
   <div>
+    <status-bar v-if="isLoading" />
     <h3 class="header">Comments</h3>
     <sorting />
     <comment-list />
-    <paginator :dataLength="dataLength" :pageSize="pageSize" />
+    <paginator v-if="displayedComments.length > 0" :dataLength="dataLength" :pageSize="pageSize" />
     <add-comment />
   </div>
 </template>
@@ -13,7 +14,8 @@ import Paginator from "./../components/paginator";
 import AddComment from "./../components/addcomment";
 import CommentList from "./../components/commentlist";
 import Sorting from "./../components/sorting";
-import { mapState } from "vuex";
+import StatusBar from "./../components/statusbar";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -21,6 +23,7 @@ export default {
     Paginator,
     AddComment,
     CommentList,
+    StatusBar,
     Sorting
   },
   data() {
@@ -29,7 +32,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["displayedComments"]),
     ...mapState({
+      isLoading: state => state.isLoading,
       dataLength: state => state.allComments.length
     })
   }
