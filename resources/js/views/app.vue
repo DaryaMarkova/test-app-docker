@@ -1,6 +1,6 @@
 <template>
   <div>
-    <status-bar v-if="isLoading" />
+    <progress-bar v-if="isLoading" />
     <h3 class="header">Comments</h3>
     <sorting />
     <comment-list />
@@ -14,7 +14,7 @@ import Paginator from "./../components/paginator";
 import AddComment from "./../components/addcomment";
 import CommentList from "./../components/commentlist";
 import Sorting from "./../components/sorting";
-import StatusBar from "./../components/statusbar";
+import ProgressBar from "./../components/progressbar";
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -23,7 +23,7 @@ export default {
     Paginator,
     AddComment,
     CommentList,
-    StatusBar,
+    ProgressBar,
     Sorting
   },
   data() {

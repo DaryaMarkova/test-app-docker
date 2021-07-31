@@ -34,9 +34,9 @@ export default {
   data() {
     return {
       idOrder: -1, // направление сортировки по id
-      dateOrder: 1, // направление сортировки по дате
-      dateFrom: new Date(), // стартовая
-      dateTo: new Date() // и конечная дата для фильтрации
+      dateOrder: -1, // направление сортировки по дате
+      dateFrom: null, // стартовая
+      dateTo: null // и конечная дата для фильтрации
     };
   },
   methods: {
