@@ -64,7 +64,7 @@ export default {
       if (startDate && endDate) {
         return item => {
           const time = getTime(item.date);
-          return time > getTime(startDate) && time < getTime(endDate);
+          return time >= getTime(startDate) && time <= getTime(endDate);
         };
       } else if (startDate) {
         return item => {
@@ -85,7 +85,13 @@ export default {
       this.setFilter(filter);
     },
     dateTo(newDateTo) {
-      const filter = this.getFilterByDates(this.dateFrom, newDateTo);
+      const endOfDateTo = moment(newDateTo).add({
+        hours: 23,
+        minutes: 59,
+        seconds: 59
+      });
+
+      const filter = this.getFilterByDates(this.dateFrom, endOfDateTo);
       this.setFilter(filter);
     }
   }
