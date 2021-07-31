@@ -36,6 +36,9 @@ export default {
       currentPage: 1
     };
   },
+  created() {
+    this.notifySelectedRange(this.currentPage);
+  },
   watch: {
     dataLength: {
       handler(newLength) {
@@ -46,7 +49,7 @@ export default {
           this.currentPage -= 1;
           startIndex = this.getStartIndex();
         }
-        this.$store.commit("setDataRange", [startIndex, endIndex]);
+        this.setDataRange([startIndex, endIndex]);
       }
     }
   },

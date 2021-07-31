@@ -36,7 +36,7 @@ export default {
       idOrder: -1, // направление сортировки по id
       dateOrder: -1, // направление сортировки по дате
       dateFrom: null, // стартовая
-      dateTo: null // и конечная дата для фильтрации
+      dateTo: null // и конечная дата для фильтрации и поиска по диапазону
     };
   },
   methods: {
@@ -60,11 +60,18 @@ export default {
     },
     getFilterByDates(startDate, endDate) {
       const getTime = date => moment(date).unix();
+      const endOfDateTo = endDate
+        ? moment(endDate).add({
+            hours: 23,
+            minutes: 59,
+            seconds: 59
+          })
+        : null;
 
-      if (startDate && endDate) {
+      if (startDate && endOfDateTo) {
         return item => {
           const time = getTime(item.date);
-          return time >= getTime(startDate) && time <= getTime(endDate);
+          return time >= getTime(startDate) && time <= getTime(endOfDateTo);
         };
       } else if (startDate) {
         return item => {
@@ -74,7 +81,7 @@ export default {
       } else {
         return item => {
           const time = getTime(item.date);
-          return time <= getTime(endDate);
+          return time <= getTime(endOfDateTo);
         };
       }
     }
@@ -85,13 +92,7 @@ export default {
       this.setFilter(filter);
     },
     dateTo(newDateTo) {
-      const endOfDateTo = moment(newDateTo).add({
-        hours: 23,
-        minutes: 59,
-        seconds: 59
-      });
-
-      const filter = this.getFilterByDates(this.dateFrom, endOfDateTo);
+      const filter = this.getFilterByDates(this.dateFrom, newDateTo);
       this.setFilter(filter);
     }
   }
