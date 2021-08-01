@@ -21,3 +21,20 @@
     color: grey;
     opacity: 0.8;
 }
+
+@media (min-width: 320px) and (max-width: 500px) {
+    .comment-sorting {
+        display: block;
+        text-align: start;
+    }
+    .comment-sorting__button {
+        display: block;
+        width: 100%;
+    }
+    .datepicker {
+        width: 100%;
+    }
+    .v3dp__datepicker {
+        width: 100%;
+    }
+}
