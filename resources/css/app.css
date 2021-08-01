@@ -43,3 +43,8 @@ body {
     color: #1284e7;
     cursor: pointer;
 }
+@media (min-width: 320px) and (max-width: 520px) {
+    #app {
+        padding: 16px;
+    }
+}
