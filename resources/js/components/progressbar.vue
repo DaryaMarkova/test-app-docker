@@ -1,11 +1,35 @@
 <template>
-  <div class="progress">
-    <div class="progress-highlight"></div>
+  <div>
+    <div v-if="isError && !dismissError" class="status">{{errorMessage}}</div>
+    <div v-if="isLoading" class="progress">
+      <div class="progress-highlight"></div>
+    </div>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
-  name: "progress-bar"
+  name: "progress-bar",
+  computed: {
+    ...mapState({
+      isError: state => state.isError,
+      isLoading: state => state.isLoading,
+      errorMessage: state => state.errorMessage
+    })
+  },
+  data() {
+    return {
+      dismissError: true
+    };
+  },
+  watch: {
+    isError() {
+      this.dismissError = false;
+      setTimeout(() => {
+        this.dismissError = true;
+      }, 3000);
+    }
+  }
 };
 </script>
 <style>
@@ -26,6 +50,11 @@ export default {
   height: 3px;
   background: #1284e7;
   animation: move 2s infinite;
+}
+.status {
+  text-align: center;
+  font-size: 0.9em;
+  color: grey;
 }
 @keyframes move {
   from {

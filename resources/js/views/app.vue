@@ -1,6 +1,6 @@
 <template>
   <div>
-    <progress-bar v-if="isLoading" />
+    <progress-bar />
     <h3 class="header">Comments</h3>
     <sorting />
     <comment-list />
@@ -34,7 +34,6 @@ export default {
   computed: {
     ...mapGetters(["displayedComments"]),
     ...mapState({
-      isLoading: state => state.isLoading,
       dataLength: state => state.allComments.length
     })
   }

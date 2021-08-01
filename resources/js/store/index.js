@@ -17,7 +17,9 @@ export const Store = {
             filterPredicate: it => it, // предикат фильтрации
             startSliceIndex: 0, // индексы начала
             endSliceIndex: 0, // и конца массива для отображения среза данных,
-            isLoading: false
+            isLoading: false,
+            isError: false,
+            errorMessage: ""
         };
     },
     getters: {
@@ -38,36 +40,49 @@ export const Store = {
                 );
         }
     },
-    // TODO: proper error handling
     actions: {
         async [Types.LOAD]({ commit, state }) {
             state.isLoading = true;
+            state.isError = false;
 
             commentDataService
                 .fetchComments()
                 .then(list => commit(Types.LOAD, list))
-                .catch(() => commit(Types.LOAD, []))
+                .catch(() => {
+                    commit(Types.LOAD, []);
+                    state.isError = true;
+                    state.errorMessage = "Error loading data";
+                })
                 .finally(() => {
                     state.isLoading = false;
                 });
         },
         [Types.ADD]({ commit, state }, comment) {
             state.isLoading = true;
+            state.isError = false;
 
             commentDataService
                 .createComment(comment)
                 .then(createdComment => commit(Types.ADD, createdComment))
-                .catch(() => commit({}))
+                .catch(() => {
+                    state.isError = true;
+                    state.errorMessage = "Error adding data";
+                })
                 .finally(() => {
                     state.isLoading = false;
                 });
         },
         [Types.DELETE]({ commit, state }, commentId) {
             state.isLoading = true;
+            state.isError = false;
 
             commentDataService
                 .deleteComment(commentId)
                 .then(() => commit(Types.DELETE, commentId))
+                .catch(() => {
+                    state.isError = true;
+                    state.errorMessage = "Error deleting data";
+                })
                 .finally(() => {
                     state.isLoading = false;
                 });
