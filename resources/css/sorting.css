@@ -14,9 +14,10 @@
     text-align: center;
 }
 .comment-sorting__button {
-    color: grey;
-    opacity: 0.8;
+    white-space: nowrap;
     padding-right: 8px;
     font-size: 0.9em;
     cursor: pointer;
+    color: grey;
+    opacity: 0.8;
 }
