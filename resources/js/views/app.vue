@@ -4,7 +4,7 @@
     <h3 class="header">Comments</h3>
     <sorting />
     <comment-list />
-    <paginator v-if="displayedComments.length > 0" :dataLength="dataLength" :pageSize="pageSize" />
+    <paginator :dataLength="displayedComments.length" :pageSize="pageSize" />
     <add-comment />
   </div>
 </template>
@@ -32,10 +32,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["displayedComments"]),
-    ...mapState({
-      dataLength: state => state.allComments.length
-    })
+    ...mapGetters(["displayedComments"])
   }
 };
 </script>

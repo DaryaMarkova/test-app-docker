@@ -1,7 +1,7 @@
 <template>
   <div class="comment-list">
     <comment-item
-      v-for="comment in displayedComments"
+      v-for="comment in slicedDisplayedComments"
       :key="comment.id"
       :id="comment.id"
       :name="comment.name"
@@ -12,7 +12,7 @@
 </template>
 <script>
 import CommentItem from "./commentitem";
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import { Types } from "./../store/";
 export default {
   name: "comment-list",
@@ -23,10 +23,7 @@ export default {
     this.$store.dispatch(Types.LOAD);
   },
   computed: {
-    ...mapGetters(["displayedComments"]),
-    ...mapState({
-      allComments: state => state.allComments
-    })
+    ...mapGetters(["slicedDisplayedComments"])
   }
 };
 </script>

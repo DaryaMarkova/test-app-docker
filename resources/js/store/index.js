@@ -14,7 +14,7 @@ export const Store = {
         return {
             allComments: [],
             sortPredicate: () => 1, // предикат сортировки
-            filterPredicate: it => it, // предикат фильтрации
+            filterPredicate: it => it, // предикат фильтрации,
             startSliceIndex: 0, // индексы начала
             endSliceIndex: 0, // и конца массива для отображения среза данных,
             isLoading: false,
@@ -24,20 +24,21 @@ export const Store = {
     },
     getters: {
         displayedComments(state) {
-            const {
-                sortPredicate,
-                filterPredicate,
-                startSliceIndex,
-                endSliceIndex
-            } = state;
+            const { sortPredicate, filterPredicate } = state;
 
             return state.allComments
                 .sort(sortPredicate)
-                .filter(filterPredicate)
-                .slice(
-                    startSliceIndex,
-                    endSliceIndex > 0 ? endSliceIndex : state.allComments.length
-                );
+                .filter(filterPredicate);
+        },
+        slicedDisplayedComments(state, getters) {
+            const { startSliceIndex, endSliceIndex } = state;
+
+            const maxLength = getters.displayedComments.length;
+
+            return getters.displayedComments.slice(
+                startSliceIndex,
+                endSliceIndex > 0 ? endSliceIndex : maxLength
+            );
         }
     },
     actions: {
@@ -103,7 +104,6 @@ export const Store = {
         },
         [Types.ADD](state, comment) {
             state.allComments.push(comment);
-            state.allComments.sort(state.sortPredicate);
         },
         [Types.DELETE](state, commentId) {
             state.allComments = state.allComments.filter(

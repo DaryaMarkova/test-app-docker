@@ -2,8 +2,8 @@
   <div class="comment-sorting">
     <a
       class="comment-sorting__button"
-      v-bind:class="{ 'arrowed-up': idOrder > 0, 'arrowed-down': idOrder < 0 }"
-      @click="toggleSortingIdOrder"
+      v-bind:class="{ 'arrowed-up': idSortingOrder > 0, 'arrowed-down': idSortingOrder < 0 }"
+      @click="idSortingOrder *= -1"
     >Id</a>
     <span class="comment-sorting__button">From:</span>
     <date-picker class="datepicker" v-model="dateFrom" />
@@ -25,21 +25,19 @@ export default {
   },
   data() {
     return {
-      idOrder: -1, // направление сортировки по id
+      idSortingOrder: 0, // направление сортировки по id
       dateFrom: null, // стартовая
       dateTo: null // и конечная дата для фильтрации и поиска по диапазону
     };
+  },
+  created() {
+    this.idSortingOrder = -1; // по умолчанию сортируем по убыванию id
   },
   methods: {
     ...mapActions({
       setPredicate: Types.SET_PREDICATE,
       setFilter: Types.SET_FILTER
     }),
-    toggleSortingIdOrder() {
-      this.idOrder *= -1;
-
-      this.setPredicate((item1, item2) => this.idOrder * (item1.id - item2.id));
-    },
     getFilterByDates(startDate, endDate) {
       const getTime = date => moment(date).unix();
       const endOfDateTo = endDate
@@ -60,11 +58,14 @@ export default {
           const time = getTime(item.date);
           return time >= getTime(startDate);
         };
-      } else {
+      } else if (endDate) {
         return item => {
           const time = getTime(item.date);
           return time <= getTime(endOfDateTo);
         };
+      } else {
+        // обе даты равны null - сбрасываем фильтр
+        return item => item;
       }
     }
   },
@@ -76,6 +77,9 @@ export default {
     dateTo(newDateTo) {
       const filter = this.getFilterByDates(this.dateFrom, newDateTo);
       this.setFilter(filter);
+    },
+    idSortingOrder(newOrder) {
+      this.setPredicate((item1, item2) => newOrder * (item1.id - item2.id));
     }
   }
 };
